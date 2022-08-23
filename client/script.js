@@ -1,8 +1,5 @@
 
-const socket = io("http://127.0.0.1:8080/");
-socket.on('hello',(s) =>{
-    console.log('HELLO FROM SERVER');
-})
+const socket = io();
 
 const gameState = { //gamestate object
     player: {
