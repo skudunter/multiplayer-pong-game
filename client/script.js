@@ -33,7 +33,7 @@ socket.on('init', (id) => {//on connection to server
 });
 
 socket.on('update gameState', (state) => {//redraw client side each time server updates gameState
-    gameState = JSON.parse(state);//turn string to object
+    gameState = state;//turn string to object
     requestAnimationFrame(() => { drawGame(gameState) });//draw
 
 })

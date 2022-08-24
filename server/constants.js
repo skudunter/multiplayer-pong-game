@@ -1,14 +1,18 @@
 
-const FPS = 60;
+const FPS = 200;
 const WIDTH = 1200;
 const HEIGHT = 800;
-let velX = Math.random()*5;
-let velY = Math.random()*5;
+const BALLRADIUS = 20;
+const PLAYERWIDTH = 30;
+const PLAYERHEIGHT = 100;
+
 
 module.exports = {
     WIDTH:WIDTH,
     FPS:FPS,
     HEIGHT:HEIGHT,
-    velX:velX,
-    velY:velY
+    BALLRADIUS:BALLRADIUS,
+    PLAYERHEIGHT:PLAYERHEIGHT,
+    PLAYERWIDTH:PLAYERWIDTH
+
 }

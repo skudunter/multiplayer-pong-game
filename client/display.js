@@ -1,3 +1,4 @@
+
 //setup ui
 var c = document.getElementById("canvas");
 var ctx = c.getContext("2d");
@@ -8,6 +9,8 @@ ctx.fillRect(0, 0, WIDTH, HEIGHT);
 drawGame(gameState);
 
 function drawGame(state) { //draw the gamestate 
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0,0,WIDTH,HEIGHT);
     let player1 = state.player1;
     let player2 = state.player2;
     let ball = state.ball;
