@@ -1,5 +1,5 @@
 
-const socket = io();
+const socket = io();//init io
 
 let gameState = { //gamestate object
     player1: {
@@ -25,4 +25,26 @@ let gameState = { //gamestate object
         }
     }
 }
+
+document.addEventListener('keydown', handleKeyPress)//looks for keypress events on the canvas 
+
+socket.on('init', (id) => {//on connection to server
+    console.log('My id: ' + id);
+});
+
+socket.on('update gameState', (state) => {//redraw client side each time server updates gameState
+    gameState = JSON.parse(state);//turn string to object
+    requestAnimationFrame(() => { drawGame(gameState) });//draw
+
+})
+
+function handleKeyPress(e) {
+    if (e.keyCode == 38) {//up arrow
+        socket.emit('upKeyPress',socket.id);
+    }
+    else if (e.keyCode == 40) {//down arrow
+        socket.emit('downKeyPress',socket.id)
+    }
+}
+
 
