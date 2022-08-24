@@ -24,7 +24,7 @@ io.on('connection', (socket) => {
         socket.emit('init', socket.id);
         if(players.length == 2){
             //startgame
-            const InterValID = setInterval(startGame(),1000/constants.FPS)
+            //const InterValID = setInterval(startGame(),1000/constants.FPS)
         }
 
     }
