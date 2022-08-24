@@ -7,13 +7,35 @@ const io = new Server(server);
 const constants = require('./constants');
 let players = [];
 
+
+//link static files
 app.use(express.static('client'));
 app.use(express.static('assets'));
 
-app.get('/', (req, res) => {
+app.get('/', (req, res) => {//initial get request
     res.sendFile('C:/Users/Daniel/Code/node-js/multiplayer-pong-game-1/client/index.html');
 })
+server.listen(80);//listen on port 80
 
-server.listen(80);
+io.on('connection', (socket) => {
+    if (players.length < 2) {
+        console.log('client has connected: ' + socket.id);
+        players.push(socket.id);//update the players array
+        socket.emit('init', socket.id);
+        if(players.length == 2){
+            //startgame
+            const InterValID = setInterval(startGame(),1000/constants.FPS)
+        }
+
+    }
+    socket.on('disconnect', () => {//splice the disconnected player outof the players array
+        for (let i = 0; i < players.length; i++) {
+            if (players[i] == socket.id) {
+                players.splice(i);
+                console.log('id: ' + socket.id + ' has disconnected');
+            }
+        }
+    });
+});
 
 
