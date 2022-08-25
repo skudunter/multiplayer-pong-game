@@ -60,10 +60,17 @@ socket.on("update gameState", (state) => {
   }); //draw
 });
 
+socket.on('scoreSound',() =>{
+  scoreSound.play();
+});
+
+socket.on('collideSound',() =>{
+  collideSound.play();
+});
+
 function handleKeyPress(e) {
   if (e.keyCode == 38) {
     //up arrow
-    collideSound.play();
     socket.emit("upKeyPress", socket.id);
   } else if (e.keyCode == 40) {
     //down arrow

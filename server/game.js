@@ -61,13 +61,14 @@ function updateBall() {
     gameState.ball.y = HEIGHT / 2 + BALLRADIUS / 2;
     velocity.x = getRandomVelocity();
     velocity.y = getRandomVelocity();
-    socket.emit();
+    io.emit("scoreSound");
   } else if (gameState.ball.x - BALLRADIUS <= 0) {
     gameState.player2.score.value++;
     gameState.ball.x = WIDTH / 2;
     gameState.ball.y = HEIGHT / 2;
     velocity.x = getRandomVelocity();
     velocity.y = getRandomVelocity();
+    io.emit("scoreSound");
   }
 
   if (
@@ -76,12 +77,14 @@ function updateBall() {
     gameState.ball.y >= gameState.player1.y
   ) {
     velocity.x = -velocity.x;
+    io.emit('collideSound');
   } else if (
     gameState.ball.x + BALLRADIUS >= gameState.player2.x - PLAYERWIDTH / 2 &&
     gameState.ball.y <= gameState.player2.y + PLAYERHEIGHT &&
     gameState.ball.y >= gameState.player2.y
   ) {
     velocity.x = -velocity.x;
+    io.emit('collideSound');
   }
 }
 function player1MoveUp() {
@@ -106,27 +109,33 @@ function player2MoveDown() {
 
 function getRandomVelocity() {
   let value = Math.random() * 2 - 1;
-  if (value >= 0) {
-    value += 2;
-  } else if (value < 0) {
-    value += -2;
-  }
+  // if (value >= 0) {
+  //   value += 2;
+  // } else {
+  //   value += -2;
+  // }
+  value += value >= 0 ? 2 : -2;
   return value * SPEED;
 }
 module.exports = {
-  startGame: function () {
-    startGame();
-  },
-  player1MoveUp: function () {
-    player1MoveUp();
-  },
-  player2MoveUp: function () {
-    player2MoveUp();
-  },
-  player1MoveDown: function () {
-    player1MoveDown();
-  },
-  player2MoveDown: function () {
-    player2MoveDown();
-  },
+  // startGame: function () {
+  //   startGame();
+  // },
+  // player1MoveUp: function () {
+  //   player1MoveUp();
+  // },
+  // player2MoveUp: function () {
+  //   player2MoveUp();
+  // },
+  // player1MoveDown: function () {
+  //   player1MoveDown();
+  // },
+  // player2MoveDown: function () {
+  //   player2MoveDown();
+  // },
+  startGame,
+  player1MoveUp,
+  player2MoveUp,
+  player1MoveDown,
+  player2MoveDown,
 };
