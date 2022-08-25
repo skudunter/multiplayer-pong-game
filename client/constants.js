@@ -4,3 +4,14 @@ const PLAYERWIDTH = 30;
 const PLAYERHEIGHT = 100;
 const BALLRADIUS = 20;
 const TEXTSIZE = 80;
+const FPS = 200;
+
+module.exports = {
+  WIDTH,
+  HEIGHT,
+  PLAYERWIDTH,
+  PLAYERHEIGHT,
+  BALLRADIUS,
+  TEXTSIZE,
+  FPS,
+};
