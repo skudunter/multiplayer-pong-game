@@ -16,7 +16,6 @@ let players = []; //array of players
 
 //link static files
 app.use(express.static("client"));
-// app.use(express.static(path.join(__dirname,"../assets")));
 
 app.get('/score.wav', (req, res) => {
   res.sendFile(path.join(__dirname, '../assets/score.wav'));
@@ -27,10 +26,7 @@ app.get('/collide.wav', (req, res) => {
 
 app.get("/", (req, res) => {
   //initial get request
-  // res.sendFile(
-  //   "C:/Users/Daniel/Code/node-js/multiplayer-pong-game-1/client/index.html"
-  // );
-  res.sendFile(path.join(__dirname, '../client/index.html'));
+  res.sendFile(path.join(__dirname, '../client/game.html'));
 });
 server.listen(PORT, () => {console.log(`Server listening on port ${PORT}`)});
 
