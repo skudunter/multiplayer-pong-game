@@ -1,4 +1,3 @@
-let velocity = { x: 0, y: 0 }; //velocity for ball
 const {
   FPS,
   WIDTH,
@@ -6,13 +5,15 @@ const {
   PLAYERWIDTH,
   PLAYERHEIGHT,
   BALLRADIUS,
+  SPEED,
+  ACCELERATION,
+  PLAYERSPEED,
 } = require("C:/Users/Daniel/Code/node-js/multiplayer-pong-game-1/client/constants.js"); //get constants
-
 let gameState = {
   //gamestate object
   player1: {
-    x: 0,
-    y: HEIGHT / 2,
+    x: PLAYERWIDTH / 2,
+    y: HEIGHT / 2 - PLAYERHEIGHT / 2,
     score: {
       value: 0,
       x: 320, //placeholder
@@ -20,12 +21,12 @@ let gameState = {
     },
   },
   ball: {
-    x: WIDTH / 2,
-    y: HEIGHT / 2,
+    x: WIDTH / 2 + BALLRADIUS / 2,
+    y: HEIGHT / 2 + BALLRADIUS / 2,
   },
   player2: {
-    x: WIDTH - 30,
-    y: HEIGHT / 2,
+    x: WIDTH - PLAYERWIDTH / 2,
+    y: HEIGHT / 2 - PLAYERHEIGHT / 2,
     score: {
       value: 0,
       x: 900, //placeholder
@@ -33,40 +34,98 @@ let gameState = {
     },
   },
 };
+const io = require("./server.js"); //get io
+
+let velocity = { x:getRandomVelocity(), y: getRandomVelocity() }; //velocity for ball
 
 function startGame() {
+  //start the game gets exported then sent to setinterval
   updateBall();
-  io.emit("update gameState", gameState);
+  io.emit("update gameState", gameState); //update gameState
 }
 
 function updateBall() {
-  gameState.ball.x += velocityX;
-  gameState.ball.y += velocityY;
+  gameState.ball.x = gameState.ball.x + velocity.x;
+  gameState.ball.y = gameState.ball.y + velocity.y;
 
-  // ball colisions logic
+  // ball colisions logic in y plane
   if (gameState.ball.y + BALLRADIUS >= HEIGHT) {
-    velocityY = -velocityY;
-  } else if (gameState.ball.y <= 0) {
-    velocityY = -velocityY;
+    velocity.y = -velocity.y;
+  } else if (gameState.ball.y - BALLRADIUS <= 0) {
+    velocity.y = -velocity.y;
   }
+  // ball score mechanics
   if (gameState.ball.x + BALLRADIUS >= WIDTH) {
     gameState.player1.score.value++;
-    gameState.ball.x = WIDTH / 2;
-    gameState.ball.y = HEIGHT / 2;
-    velocityX = (Math.random * 2 - 1) * MULTIPLIER;
-    velocityY = (Math.random * 2 - 1) * MULTIPLIER;
-  } else if (gameState.ball.x <= 0) {
+    gameState.ball.x = WIDTH / 2 + BALLRADIUS / 2;
+    gameState.ball.y = HEIGHT / 2 + BALLRADIUS / 2;
+    velocity.x = getRandomVelocity();
+    velocity.y = getRandomVelocity();
+  } else if (gameState.ball.x - BALLRADIUS <= 0) {
     gameState.player2.score.value++;
     gameState.ball.x = WIDTH / 2;
     gameState.ball.y = HEIGHT / 2;
-    velocityX = Math.random * 2 - 1;
-    velocityY = Math.random * 2 - 1;
+    velocity.x = getRandomVelocity();
+    velocity.y = getRandomVelocity();
   }
-  if (gameState.ball.x <= PLAYERWIDTH) {
-    velocityX = -velocityX;
+
+  if (
+    gameState.ball.x - BALLRADIUS <= gameState.player1.x + PLAYERWIDTH / 2 &&
+    gameState.ball.y <= gameState.player1.y + PLAYERHEIGHT &&
+    gameState.ball.y >= gameState.player1.y 
+  ) {
+    velocity.x = -velocity.x;
+  } else if (
+    gameState.ball.x + BALLRADIUS >= gameState.player2.x - PLAYERWIDTH / 2 &&
+    gameState.ball.y <= gameState.player2.y + PLAYERHEIGHT &&
+    gameState.ball.y >= gameState.player2.y
+  ) {
+    velocity.x = -velocity.x;
   }
 }
+function player1MoveUp() {
+  gameState.player1.y += -PLAYERSPEED;
+  //io.emit("update gameState", gameState); //update gameState
+}
+
+function player2MoveUp() {
+  gameState.player2.y += -PLAYERSPEED;
+  //io.emit("update gameState", gameState); //update gameState
+}
+
+function player1MoveDown() {
+  gameState.player1.y += PLAYERSPEED;
+  //io.emit("update gameState", gameState); //update gameState
+}
+
+function player2MoveDown() {
+  gameState.player2.y += PLAYERSPEED;
+  //io.emit("update gameState", gameState); //update gameState
+}
+
+function getRandomVelocity() {
+  let value = Math.random() * 2 - 1;
+  if (value >= 0) {
+    value += 2;
+  } else if (value < 0) {
+    value += -2;
+  }
+  return value * SPEED;
+}
 module.exports = {
-  gameState,
-  startGame,
+  startGame: function () {
+    startGame();
+  },
+  player1MoveUp: function () {
+    player1MoveUp();
+  },
+  player2MoveUp: function () {
+    player2MoveUp();
+  },
+  player1MoveDown: function () {
+    player1MoveDown();
+  },
+  player2MoveDown: function () {
+    player2MoveDown();
+  },
 };

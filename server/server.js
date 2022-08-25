@@ -4,13 +4,14 @@ const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-const {gameState} = require('./game.js');
-startGame = require('./game.js');
+module.exports = io; //export io module
+//const {gameState} = require('./game.js');
+let game = require("./game.js");
 const {
   FPS,
 } = require("C:/Users/Daniel/Code/node-js/multiplayer-pong-game-1/client/constants.js"); //get constants
 
-let players = [];//array of players
+let players = []; //array of players
 
 //link static files
 app.use(express.static("client"));
@@ -31,9 +32,27 @@ io.on("connection", (socket) => {
     socket.emit("init", socket.id);
     if (players.length == 2) {
       //startgame
-      const InterValID = setInterval(startGame, 1000 / FPS);
+      const InterValID = setInterval(game.startGame, 1000 / FPS);
     }
   }
+  socket.on("upKeyPress", (id) => {
+    if (id == players[0]) {
+        //player1 moved
+        game.player1MoveUp();
+    } else if (id == players[1]) {
+        //player2 moved
+        game.player2MoveUp();
+    }
+  });
+  socket.on("downKeyPress", (id) => {
+    if (id == players[0]) {
+        //player1 moved
+        game.player1MoveDown();
+    } else if (id == players[1]) {
+        //player2 moved
+        game.player2MoveDown();
+    }
+  });
   socket.on("disconnect", () => {
     //splice the disconnected player outof the players array
     for (let i = 0; i < players.length; i++) {
@@ -44,4 +63,3 @@ io.on("connection", (socket) => {
     }
   });
 });
-

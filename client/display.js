@@ -1,3 +1,4 @@
+
 //setup ui
 var c = document.getElementById("canvas");
 var ctx = c.getContext("2d");
@@ -24,7 +25,7 @@ function drawGame(state) {
 
 function drawPlayer(player) {
   ctx.fillStyle = "#FFFFFF";
-  ctx.fillRect(player.x, player.y, PLAYERWIDTH, PLAYERHEIGHT);
+  ctx.fillRect(player.x-PLAYERWIDTH/2, player.y, PLAYERWIDTH, PLAYERHEIGHT);
 }
 
 function drawBall(ball) {
