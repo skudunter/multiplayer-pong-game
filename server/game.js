@@ -1,4 +1,4 @@
-const {
+let {
   FPS,
   WIDTH,
   HEIGHT,
@@ -36,7 +36,7 @@ let gameState = {
 };
 const io = require("./server.js"); //get io
 
-let velocity = { x:getRandomVelocity(), y: getRandomVelocity() }; //velocity for ball
+let velocity = { x: getRandomVelocity(), y: getRandomVelocity() }; //velocity for ball
 
 function startGame() {
   //start the game gets exported then sent to setinterval
@@ -61,6 +61,7 @@ function updateBall() {
     gameState.ball.y = HEIGHT / 2 + BALLRADIUS / 2;
     velocity.x = getRandomVelocity();
     velocity.y = getRandomVelocity();
+    socket.emit();
   } else if (gameState.ball.x - BALLRADIUS <= 0) {
     gameState.player2.score.value++;
     gameState.ball.x = WIDTH / 2;
@@ -72,7 +73,7 @@ function updateBall() {
   if (
     gameState.ball.x - BALLRADIUS <= gameState.player1.x + PLAYERWIDTH / 2 &&
     gameState.ball.y <= gameState.player1.y + PLAYERHEIGHT &&
-    gameState.ball.y >= gameState.player1.y 
+    gameState.ball.y >= gameState.player1.y
   ) {
     velocity.x = -velocity.x;
   } else if (
