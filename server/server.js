@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const path = require('path');
 const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
@@ -7,23 +8,31 @@ const io = new Server(server);
 module.exports = io; //export io module
 //const {gameState} = require('./game.js');
 let game = require("./game.js");
-const {
-  FPS,
-} = require("C:/Users/Daniel/Code/node-js/multiplayer-pong-game-1/client/constants.js"); //get constants
+const { FPS } = require('../client/constants.js'); //get constants
+
+const PORT = 80;
 
 let players = []; //array of players
 
 //link static files
 app.use(express.static("client"));
-app.use(express.static("assets"));
+// app.use(express.static(path.join(__dirname,"../assets")));
+
+app.get('/score.wav', (req, res) => {
+  res.sendFile(path.join(__dirname, '../assets/score.wav'));
+});
+app.get('/collide.wav', (req, res) => {
+  res.sendFile(path.join(__dirname, '../assets/collide.wav'));
+})
 
 app.get("/", (req, res) => {
   //initial get request
-  res.sendFile(
-    "C:/Users/Daniel/Code/node-js/multiplayer-pong-game-1/client/index.html"
-  );
+  // res.sendFile(
+  //   "C:/Users/Daniel/Code/node-js/multiplayer-pong-game-1/client/index.html"
+  // );
+  res.sendFile(path.join(__dirname, '../client/index.html'));
 });
-server.listen(80); //listen on port 80
+server.listen(PORT, () => {console.log(`Server listening on port ${PORT}`)});
 
 io.on("connection", (socket) => {
   if (players.length < 2) {
@@ -47,6 +56,7 @@ io.on("connection", (socket) => {
   socket.on("downKeyPress", (id) => {
     if (id == players[0]) {
         //player1 moved
+        
         game.player1MoveDown();
     } else if (id == players[1]) {
         //player2 moved

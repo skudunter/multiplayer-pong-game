@@ -2,10 +2,7 @@ body{
     background-color: rgb(33, 29, 25);
 }
 #gameContainer{
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
+    display:flex;
+    justify-content:center;
+    align-self:center;
 }

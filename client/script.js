@@ -42,8 +42,9 @@ function sound(src) {
   };
 }
 
-// let scoreSound = new sound('C:/Users/Daniel/Code/node-js/multiplayer-pong-game-1/assets/score.wav');
-// let collideSound = new sound('C:/Users/Daniel/Code/node-js/multiplayer-pong-game-1/assets/collide.wav');
+let scoreSound = new sound('/score.wav');
+let collideSound = new sound('/collide.wav');
+
 document.addEventListener("keydown", handleKeyPress); //looks for keypress events on the canvas
 
 socket.on("init", (id) => {
@@ -62,6 +63,7 @@ socket.on("update gameState", (state) => {
 function handleKeyPress(e) {
   if (e.keyCode == 38) {
     //up arrow
+    collideSound.play();
     socket.emit("upKeyPress", socket.id);
   } else if (e.keyCode == 40) {
     //down arrow
