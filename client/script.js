@@ -42,10 +42,18 @@ function sound(src) {
   };
 }
 
-let scoreSound = new sound('/score.wav');
-let collideSound = new sound('/collide.wav');
+let scoreSound = new sound('/score.wav');//scores sound
+let collideSound = new sound('/collide.wav');//collide sound
 
 document.addEventListener("keydown", handleKeyPress); //looks for keypress events on the canvas
+document.addEventListener('click',() =>{
+  document.getElementById('a').style.display = 'none';
+  document.getElementById('p').style.display = 'none';
+  document.getElementById('h1').style.display = 'none';
+  document.getElementById('container').style.animationName = 'show';
+  document.getElementById('container').style.animationDuration = '4s';
+  socket.emit('start game');
+});
 
 socket.on("init", (id) => {
   //on connection to server

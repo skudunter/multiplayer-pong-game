@@ -5,7 +5,7 @@ const PLAYERHEIGHT = 100;
 const BALLRADIUS = 20;
 const TEXTSIZE = 80;
 const FPS = 200;
-const SPEED = 69;
+const SPEED = 1;
 const ACCELERATION =0;
 const PLAYERSPEED = 20;
 

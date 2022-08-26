@@ -5,10 +5,11 @@ const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
+let gameStarted = false;
 module.exports = io; //export io module
 //const {gameState} = require('./game.js');
 let game = require("./game.js");
-const { FPS } = require("../client/constants.js"); //get constants
+const { FPS, PLAYERHEIGHT } = require("../client/constants.js"); //get constants
 
 const PORT = 80;
 
@@ -27,7 +28,6 @@ app.get("/collide.wav", (req, res) => {
 app.get("/", (req, res) => {
   //initial get request
   res.sendFile(path.join(__dirname, "../client/game.html"));
-  console.log(req.params);
 });
 server.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
@@ -38,7 +38,10 @@ io.on("connection", (socket) => {
     console.log("client has connected: " + socket.id);
     players.push(socket.id); //update the players array
     socket.emit("init", socket.id);
-    if (players.length == 2) {
+    socket.on('start game',() =>{
+      gameStarted = true;
+    });
+    if (players.length == 2 && gameStarted) {
       //startgame
       const IntervalID = setInterval(game.startGame, 1000 / FPS);
     }

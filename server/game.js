@@ -77,43 +77,46 @@ function updateBall() {
     gameState.ball.y >= gameState.player1.y
   ) {
     velocity.x = -velocity.x;
-    io.emit('collideSound');
+    io.emit("collideSound");
   } else if (
     gameState.ball.x + BALLRADIUS >= gameState.player2.x - PLAYERWIDTH / 2 &&
     gameState.ball.y <= gameState.player2.y + PLAYERHEIGHT &&
     gameState.ball.y >= gameState.player2.y
   ) {
     velocity.x = -velocity.x;
-    io.emit('collideSound');
+    io.emit("collideSound");
   }
 }
 function player1MoveUp() {
-  gameState.player1.y += -PLAYERSPEED;
+  if (gameState.player1.y > 0) {
+    gameState.player1.y += -PLAYERSPEED;
+  }
   //io.emit("update gameState", gameState); //update gameState
 }
 
 function player2MoveUp() {
-  gameState.player2.y += -PLAYERSPEED;
+  if (gameState.player2.y > 0) {
+    gameState.player2.y += -PLAYERSPEED;
+  }
   //io.emit("update gameState", gameState); //update gameState
 }
 
 function player1MoveDown() {
-  gameState.player1.y += PLAYERSPEED;
+  if (gameState.player1.y + PLAYERHEIGHT  < HEIGHT) {
+    gameState.player1.y += PLAYERSPEED;
+  }
   //io.emit("update gameState", gameState); //update gameState
 }
 
 function player2MoveDown() {
+  if (gameState.player2.y + PLAYERHEIGHT < HEIGHT) {
   gameState.player2.y += PLAYERSPEED;
+  }
   //io.emit("update gameState", gameState); //update gameState
 }
 
 function getRandomVelocity() {
   let value = Math.random() * 2 - 1;
-  // if (value >= 0) {
-  //   value += 2;
-  // } else {
-  //   value += -2;
-  // }
   value += value >= 0 ? 2 : -2;
   return value * SPEED;
 }
