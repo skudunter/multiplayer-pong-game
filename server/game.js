@@ -8,7 +8,7 @@ let {
   SPEED,
   ACCELERATION,
   PLAYERSPEED,
-} = require("C:/Users/Daniel/Code/node-js/multiplayer-pong-game-1/client/constants.js"); //get constants
+} = require("../client/constants.js"); //get constants
 let gameState = {
   //gamestate object
   player1: {
