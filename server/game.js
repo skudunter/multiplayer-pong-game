@@ -29,7 +29,7 @@ let gameState = {
     y: HEIGHT / 2 - PLAYERHEIGHT / 2,
     score: {
       value: 0,
-      x: 900, //placeholder
+      x: 700, //placeholder
       y: 200, //placeholder
     },
   },
