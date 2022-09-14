@@ -11,7 +11,7 @@ module.exports = io; //export io module
 let game = require("./game.js");
 const { FPS, PLAYERHEIGHT } = require("../client/constants.js"); //get constants
 
-const PORT = 80;
+const PORT = process.env.PORT;
 
 let players = []; //array of players
 
