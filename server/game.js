@@ -120,6 +120,12 @@ function getRandomVelocity() {
   value += value >= 0 ? 2 : -2;
   return value * SPEED;
 }
+function restart(){
+  gameState.player1.score.value = 0;
+  gameState.player2.score.value = 0;
+  gameState.ball.x = WIDTH / 2 + BALLRADIUS / 2;
+  gameState.ball.y = HEIGHT / 2 + BALLRADIUS / 2;
+}
 module.exports = {
   // startGame: function () {
   //   startGame();
@@ -141,4 +147,5 @@ module.exports = {
   player2MoveUp,
   player1MoveDown,
   player2MoveDown,
+  restart
 };

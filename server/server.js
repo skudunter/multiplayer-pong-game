@@ -6,12 +6,13 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 let gameStarted = false;
+let IntervalID;
 module.exports = io; //export io module
 //const {gameState} = require('./game.js');
 let game = require("./game.js");
 const { FPS, PLAYERHEIGHT } = require("../client/constants.js"); //get constants
 
-const PORT = process.env.PORT;
+const PORT = 5000;
 
 let players = []; //array of players
 
@@ -38,12 +39,12 @@ io.on("connection", (socket) => {
     console.log("client has connected: " + socket.id);
     players.push(socket.id); //update the players array
     socket.emit("init", socket.id);
-    socket.on('start game',() =>{
+    socket.on("start game", () => {
       gameStarted = true;
     });
     if (players.length == 2 && gameStarted) {
       //startgame
-      const IntervalID = setInterval(game.startGame, 1000 / FPS);
+     IntervalID = setInterval(game.startGame, 1000 / FPS);
     }
   }
   socket.on("upKeyPress", (id) => {
@@ -71,6 +72,11 @@ io.on("connection", (socket) => {
       if (players[i] == socket.id) {
         players.splice(i);
         console.log("id: " + socket.id + " has disconnected");
+        //revert gamestate back to intial values
+        game.restart();
+        gameStarted = false;
+        clearInterval(IntervalID);
+        console.log('game restart');
       }
     }
   });
